@@ -1,0 +1,115 @@
+---chạy mấy cái này trong csdl
+--------
+CREATE VIEW view_SinhVien (maSV, hoTen, tenNganh, tenKhoa, ngaySinh, diaChi, email, sdt) 
+AS
+SELECT
+    SINHVIEN.maSV,
+    SINHVIEN.hoTen,
+    NGANH.tenNganh,
+    KHOA.tenKhoa,
+    SINHVIEN.ngaySinh,
+    SINHVIEN.diaChi,
+    SINHVIEN.email,
+    SINHVIEN.sdt
+FROM
+    SINHVIEN
+JOIN
+    NGANH ON SINHVIEN.maNganh = NGANH.maNganh
+JOIN
+    KHOA ON NGANH.maKhoa = KHOA.maKhoa;
+-----
+
+DELIMITER //
+
+CREATE PROCEDURE proc_ThemSinhVien(
+    IN p_maSV VARCHAR(10),
+    IN p_maNganh VARCHAR(10),
+    IN p_hoTen VARCHAR(50),
+    IN p_ngaySinh DATE,
+    IN p_queQuan VARCHAR(100),
+    IN p_gioiTinh CHAR(1),
+    IN p_diaChi VARCHAR(100),
+    IN p_email VARCHAR(100),
+    IN p_tenDN VARCHAR(50),
+    IN p_matKhau VARCHAR(255),
+    IN p_soCCCD VARCHAR(20),
+    IN p_anhThe VARCHAR(255),
+    IN p_sdt VARCHAR(15),
+    IN p_khoaHoc INT,
+    IN p_trangThai CHAR(1)
+)
+BEGIN
+    INSERT INTO SINHVIENs (
+        maSV, maNganh, hoTen, ngaySinh, queQuan, gioiTinh, diaChi, email, 
+        tenDN, matKhau, soCCCD, anhThe, sdt, khoaHoc, trangThai
+    )
+    VALUES (
+        p_maSV, p_maNganh, p_hoTen, p_ngaySinh, p_queQuan, p_gioiTinh, p_diaChi, p_email, 
+        p_tenDN, p_matKhau, p_soCCCD, p_anhThe, p_sdt, p_khoaHoc, p_trangThai
+    );
+END //
+
+DELIMITER ;
+---------------------
+CREATE VIEW v_ThongTinLopHocPhan AS
+SELECT
+    lhp.maLHP,
+    lhp.tenLop,
+    lhp.phongHoc,
+    lhp.gioHoc,
+    lhp.trangThai AS trangThaiLop,
+    mh.tenMH,
+    mh.soTC,
+    gv.hoTen AS tenGiangVien,
+    gv.email AS emailGiangVien,
+    kh.namHoc,
+    kh.kyHoc,
+    kh.trangThai AS trangThaiKyHoc
+FROM
+    LOPHOCPHANs lhp
+JOIN MONHOCs mh ON lhp.maMH = mh.maMH
+JOIN GIANGVIENs gv ON lhp.maGV = gv.maGV
+JOIN KYHOCs kh ON lhp.maKH = kh.maKH
+
+----------------
+------------------
+INSERT INTO danhsachsinhviens (maLHP, maSV)
+VALUES
+('LHP01', 'SV02'),
+('LHP01', 'SV03'),
+('LHP01', 'SV05'),
+('LHP01', 'SV06'),
+('LHP01', 'SV07'),
+('LHP01', 'SV08'),
+('LHP01', 'SV09'),
+('LHP01', 'SV10');
+-------------
+------------
+DELIMITER //
+
+CREATE TRIGGER trgCheckDiemValid
+BEFORE INSERT ON danhsachsinhviens
+FOR EACH ROW
+BEGIN
+    -- Kiểm tra giá trị điểm
+    IF NEW.diemQT < 0 OR NEW.diemQT > 10 OR NEW.diemThi < 0 OR NEW.diemThi > 10 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Điểm không hợp lệ! Điểm phải nằm trong khoảng từ 0 đến 10.';
+    END IF;
+
+    -- Kiểm tra xem sinh viên đã có điểm trong lớp học phần cụ thể hay không
+    IF EXISTS (
+        SELECT 1 
+        FROM danhsachsinhviens 
+        WHERE maSV = NEW.maSV AND maLHP = NEW.maLHP
+    ) THEN
+        -- Nếu sinh viên đã có điểm, thì phát tín hiệu lỗi
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Sinh viên đã có điểm trong lớp học phần này.';
+    END IF;
+
+    -- Nếu sinh viên chưa có điểm, chèn vào
+    INSERT INTO danhsachsinhviens (maLHP, maSV, diemQT, diemThi)
+    VALUES (NEW.maLHP, NEW.maSV, NEW.diemQT, NEW.diemThi);
+END;
+//
+
+DELIMITER ;
