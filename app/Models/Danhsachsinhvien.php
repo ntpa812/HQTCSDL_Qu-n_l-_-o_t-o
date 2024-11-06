@@ -10,6 +10,8 @@ class Danhsachsinhvien extends Model
     public $incrementing = false; 
     protected $keyType = 'string'; 
     protected $fillable = ['maLHP', 'maSV', 'diemQT', 'diemThi'];
+    public $timestamps = false;
+
     public function lophocphan()
     {
         return $this->belongsTo(Lophocphan::class, 'maLHP', 'maLHP');

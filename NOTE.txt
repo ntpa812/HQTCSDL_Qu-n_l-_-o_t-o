@@ -113,3 +113,33 @@ END;
 //
 
 DELIMITER ;
+
+------------------
+---------------
+DELIMITER //
+
+CREATE FUNCTION func_LayHoTenSinhVienID (ma VARCHAR(10))
+RETURNS VARCHAR(50)
+DETERMINISTIC
+BEGIN
+    DECLARE ten VARCHAR(50);
+    SELECT hoTen INTO ten
+    FROM SINHVIENs
+    WHERE ma = CONVERT(maSV USING utf8mb4) COLLATE utf8mb4_unicode_ci;
+    RETURN ten;
+END;
+//
+
+DELIMITER ;
+
+--------------
+-----------------
+CREATE VIEW viewDanhSachSinhVien AS
+SELECT dssv.maLHP, sv.maSV, sv.hoTen, dssv.diemQT, dssv.diemThi
+FROM DANHSACH_SINHVIEN dssv
+JOIN SINHVIEN sv ON dssv.maSV = sv.maSV
+JOIN LOPHOCPHAN lhp ON dssv.maLHP = lhp.maLHP;
+
+
+
+

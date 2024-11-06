@@ -64,7 +64,9 @@ function filterStudents() {
     var selectLHP = document.getElementById("maLHP");
     var selectSV = document.getElementById("maSV");
     var selectedOption = selectLHP.options[selectLHP.selectedIndex];
-    var sinhVienData = JSON.parse(selectedOption.getAttribute("data-sinhviens"));
+
+    // Kiểm tra và đảm bảo rằng dữ liệu JSON được truyền đúng
+    var sinhVienData = selectedOption ? JSON.parse(selectedOption.getAttribute("data-sinhviens")) : [];
 
     // Xóa tất cả các tùy chọn trong danh sách sinh viên
     selectSV.innerHTML = '<option value="" disabled selected>Chọn Mã Sinh Viên</option>';
