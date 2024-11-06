@@ -8,7 +8,7 @@ Tên đề tài: Xây dựng hệ quản trị CSDL web quản lý đào tạo t
 - [Doc](https://docs.google.com/document/d/1IrPn_FBWd7lcKYCw_j7UIC4gqKIRAvWminTl_Is3Ywc/edit?usp=sharing)
 
 ## Code
-Code mô tả
+Code mô tả một số chức năng ứng dụng view, procedure, function, trigger đã viết
 ### Sinh viên
 - Chức năng xem danh sách sinh viên (dựa trên view view_SinhVien)
 - Chức năng thêm sinh viên (dựa trên procedure proc_ThemSinhVien)
