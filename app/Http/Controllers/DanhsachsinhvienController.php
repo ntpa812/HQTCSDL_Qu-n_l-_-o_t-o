@@ -36,45 +36,6 @@ class DanhsachsinhvienController extends Controller
         
         return view('danhsachsinhviens.create', compact('lopHocPhans'));
     }
-  
-//     public function store(Request $request)
-// {
-//     $request->validate([
-//         'maLHP' => 'required|exists:lophocphans,maLHP',
-//         'maSV' => 'required|exists:sinhviens,maSV',
-//         'diemQT' => 'required|numeric|min:0|max:10',
-//         'diemThi' => 'required|numeric|min:0|max:10',
-//     ]);
-
-//     try {
-//         // Kiểm tra xem sinh viên đã có điểm trong lớp học phần cụ thể hay không
-//         $existingRecord = Danhsachsinhvien::where('maLHP', $request->maLHP)
-//                                             ->where('maSV', $request->maSV)
-//                                             ->first();
-
-//         if ($existingRecord) {
-//             // Nếu đã tồn tại, cập nhật điểm
-//             $existingRecord->diemQT = $request->diemQT;  // Đảm bảo kiểu dữ liệu
-//             $existingRecord->diemThi = $request->diemThi; // Đảm bảo kiểu dữ liệu
-//             $existingRecord->save();
-//         } else {
-//             // Nếu chưa tồn tại, chèn vào
-//             Danhsachsinhvien::create([
-//                 'maLHP' => $request->maLHP,
-//                 'maSV' => $request->maSV,
-//                 'diemQT' => $request->diemQT, // Đảm bảo kiểu dữ liệu
-//                 'diemThi' => $request->diemThi, // Đảm bảo kiểu dữ liệu
-//             ]);
-//         }
-
-//         return redirect()->route('danhsachsinhviens.index')->with('success', 'Thêm sinh viên vào danh sách thành công.');
-//     } catch (\Illuminate\Database\QueryException $e) {
-//         // Bắt lỗi từ MySQL và chuyển nó về view
-//         $errorMessage = $e->getMessage();
-
-//         return redirect()->back()->withErrors(['error' => $errorMessage]);
-//     }
-// }
 
     public function store(Request $request)
     {
