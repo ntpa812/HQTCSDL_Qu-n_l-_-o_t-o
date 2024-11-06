@@ -4,10 +4,11 @@ Bài tập lớn môn Hệ quản trị CSDL của nhóm 2 lớp 64HTTT4
 <br>
 Tên đề tài: Xây dựng hệ quản trị CSDL web quản lý đào tạo trường Đại học T
 
-# Báo cáo môn học
+## Tài liệu Báo cáo môn học
 - [Doc](https://docs.google.com/document/d/1IrPn_FBWd7lcKYCw_j7UIC4gqKIRAvWminTl_Is3Ywc/edit?usp=sharing)
 
-# Chức năng
+## Code
+Code mô tả
 ### Sinh viên
 - Chức năng xem danh sách sinh viên (dựa trên view view_SinhVien)
 - Chức năng thêm sinh viên (dựa trên procedure proc_ThemSinhVien)
